@@ -1,0 +1,84 @@
+@prefix js: <https://w3id.org/conn/js#> .
+@prefix ws: <https://w3id.org/conn/ws#> .
+@prefix : <https://w3id.org/conn#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rml: <https://w3id.org/conn/rml#> .
+@prefix ql: <http://semweb.mmlab.be/ns/ql#> .
+
+<> owl:imports <../substring-bucketizer-index-proc/steps/querySparql.ttl>.
+<> owl:imports <../sds-processors/sdsify.ttl>.
+<> owl:imports <../sds-processors/2_bucketstep.ttl>.
+<> owl:imports <../substring-bucketizer-index-proc/steps/sds_to_tree.ttl>.
+<> owl:imports <../substring-bucketizer-index-proc/steps/ingest.ttl>.
+
+[] a js:JsChannel;
+  :reader <sparql/reader-js>;
+  :writer <sparql/writer-js>.
+
+<sparql/reader-js> a :JsReaderChannel.
+<sparql/writer-js> a :JsWriterChannel.
+
+[] a js:QuerySparql;
+  js:configPath <./config/config.json> ;
+  js:sparqlResultStream <sparql/writer-js> .
+
+[] a js:JsChannel;
+  :reader <sds/reader-js>;
+  :writer <sds/writer-js>.
+
+<sds/reader-js> a :JsReaderChannel.
+<sds/writer-js> a :JsWriterChannel.
+
+[] a js:Sdsify;
+  js:input <sparql/reader-js>;
+  js:output <sds/writer-js>;
+  js:stream <https://w3id.org/sds#Stream>.
+
+<metadata/reader> a :FileReaderChannel;
+  :fileReadFirstContent "true";
+  :fileOnReplace "true";
+  :filePath <../substring-bucketizer-index-proc/metadataIn.ttl>.
+
+[] a js:JsChannel;
+  :reader <sds/reader-js-buckets>;
+  :writer <sds/writer-js-buckets>.
+
+<sds/reader-js-buckets> a :JsReaderChannel.
+<sds/writer-js-buckets> a :JsWriterChannel.
+
+[] a js:JsChannel;
+  :reader <metadata/reader-2>;
+  :writer <metadata/writer-2>.
+
+<metadata/reader-2> a :JsReaderChannel.
+<metadata/writer-2> a :JsWriterChannel.
+
+[] a js:Bucketize;
+  js:dataInput <sds/reader-js>;
+  js:metadataInput <metadata/reader>;
+  js:dataOutput <sds/writer-js-buckets>;
+  js:metadataOutput <metadata/writer-2>;
+  js:bucketizeStrategy <../sds-processors/substringBucketizeStrategy.ttl>;
+  js:inputStreamId <https://w3id.org/sds#Stream>;
+  js:outputStreamId <http://example.com/test>.
+
+
+[] a js:JsChannel;
+  :reader <tree/member-reader-js>;
+  :writer <tree/member-writer-js>.
+
+<tree/member-reader-js> a :JsReaderChannel.
+<tree/member-writer-js> a :JsWriterChannel.
+
+[] a js:SDSToTREE;
+  js:configPath <config.json>;
+  js:bucketizerStream <sds/reader-js-buckets>;
+  js:bucketizerMetaStream <metadata/reader-2>;
+  js:treeMemberOutputStream <tree/member-writer-js>.
+
+[] a js:Ingest;
+  js:configPath <config.json>;
+  js:treeMemberInputStream <tree/member-reader-js>.
+
+

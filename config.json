@@ -1,0 +1,16 @@
+{
+  "sparql": {
+    "sparqlEndpoint": "https://linked.ec-dataplatform.eu/sparql",
+    "sparqlQuery": "./sparql"
+  },
+  "namespace": {
+    "namespace_iri": "http://data.europa.eu/949/functionalInfrastructure/operationalPoints/"
+  },
+  "bucketizer": {
+    "root": "",
+    "bucketBase": "https://treecg.github.io/demo_data/era/",
+    "propertyPath": "http://data.europa.eu/949/opName",
+    "pageSize": "50"
+  },
+  "relationType": "Substring"
+}
