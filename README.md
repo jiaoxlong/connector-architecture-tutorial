@@ -159,7 +159,7 @@ regardless of the specific technologies or frameworks they are built upon (e.g. 
 
 ### Pipeline
 
-> The synergy between readable and writeable streams is a fundamental concept in data streaming. In Connector Architecture, stream piping are achieved through [pipeline](https://github.com/TREEcg/connector-architecture/wiki/Pipeline) configuration. The output Writeable stream of a process will become the input Readable stream of another, when the two processors are bundled in a pipeline.
+The synergy between readable and writeable streams is a fundamental concept in data streaming. In Connector Architecture, stream piping are achieved through [pipeline](https://github.com/TREEcg/connector-architecture/wiki/Pipeline) configuration. The output Writeable stream of a process will become the input Readable stream of another, when the two processors are bundled in a pipeline.
 
 **An example of Connector Architecture pipeline configuration**
 
@@ -194,12 +194,14 @@ regardless of the specific technologies or frameworks they are built upon (e.g. 
 ### Execution
 
 ```shell
-# copy pipeline configuration a config file to your repository
+# copy the pre-prepared pipeline configuration and the config file to your repository
 cp pipeline.ttl config.json <YOUR-REPOSITORY>
 # run pipeline
 cd connector-architecture/runner/js-runner; node ./bin/js-runner.js ../../<YOUR-REPOSITORY>/pipeline.ttl 
 ```
 By now you should have a sense about how Connector Architecture works.
+
+## Contact 
 
 Do you have a question? Please do not hesitate to contact us or create an [issue](https://github.com/TREEcg/connector-architecture/issues).
 
