@@ -23,10 +23,11 @@ cd processor
 git submodule add https://github.com/YOUR-USERNAME/YOUR-REPOSITORY
 ```
 
-### Processors
+## Processors
 
 A Connector Architecture processor refers to a module function that emits an event, which may include a series of actions, performs to achieve dynamic data being generated on a continual basis.
 Typically, a processor, except for the one used to acquire data from an endpoint or ingest data into a database, expects Readable stream(s) and Writeable stream(s) as input and output, respectively.
+
 ---
 **How to create a Connector Architecture processor? (TL;DR)**
 
