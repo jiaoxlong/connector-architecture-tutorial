@@ -184,7 +184,7 @@ More detail can be found at [Connector Architecture Wiki](https://github.com/TRE
     >    - use `Writer.push()` to push a chunk of data
 ---
 
-##Substring fragmentation pipeline##
+##Substring fragmentation pipeline
 
 The substring fragmentation pipeline we are about to implement consists of 5 JS/TS processors. 
 Long story short, you do not really need to create any processor on your own but simply compile the existing ones into your pipeline.
