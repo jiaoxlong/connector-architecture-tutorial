@@ -116,7 +116,7 @@ the Connector Architecture, shows their properties and the relations between the
 >  ].
 >```
 
-Concatenate 1-5 codes into a file named with .ttl extension. Now the func processor is configured. 
+Concatenate 1-5 codes into a file named *func.ttl*. Now the func processor is properly configured. 
 
 **How to pipe Connector Architecture processors?** 
 
@@ -128,6 +128,11 @@ In Connector Architecture, stream piping are achieved through [pipeline](https:/
 ```
 #<--PREFIX-->
 #<--Processor import>
+# assume all the processor configuration .ttl files are under cwd
+<> owl:imports <pre_func.ttl>.
+<> owl:imports <func.ttl>.
+<> owl:imports <post_func.ttl>.
+
 #<--Stream bundle-->
 [] a js:JsChannel;
   :reader <pre-func-process/reader-js>;
