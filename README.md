@@ -58,25 +58,17 @@ the Connector Architecture, shows their properties and the relations between the
 > ```
 > <> owl:imports <https://raw.githubusercontent.com/ajuvercr/js-runner/master/ontology.ttl>.
 > ```
-3. Package invocation i.e. in which package the func() is introduced
->```
-> <> :install [
->  a :GitInstall;
->  :url <https://github.com/USERNAME/REPOSITORY>;
->  :build "npm install; npm run build";
->].
->```
->
-4. Processor arguments
+
+3. Processor arguments
 
 > ```
 > js:Func a js:JsProcess;
 >  # PATH/TO/Module 
->  js:file <../src/processors.js>;
+>  js:file <./src/processors.js>;
 >  # declare func() is a instance of js:Func, which is a js:JsProcess
 >  js:function "func";
 >  # relative path to root of JS program
->  js:location <../>;
+>  js:location <./>;
 >  # js:func parameter mappings
 >  js:mapping [
 >    a fno:Mapping;
@@ -92,7 +84,7 @@ the Connector Architecture, shows their properties and the relations between the
 >  ] .
 > ```
 
-5. Processor Shape
+4. Processor Shape
 > ```
 > # SHACL shape restriction on the js:JSProcess resource instance
 > js:JsProcessorShape a sh:NodeShape; 
@@ -121,7 +113,7 @@ Concatenate 1-5 codes into a file named *func.ttl*. Now the func processor is pr
 **How to pipe Connector Architecture processors?** 
 
 The synergy between readable and writeable streams is a fundamental concept in data streaming.
-In Connector Architecture, stream piping are achieved through [pipeline](https://github.com/TREEcg/connector-architecture/wiki/Pipeline) configuration. The output Writeable stream of a process will become the input Readable stream of another, when the two processors are bundled in a pipeline.
+In Connector Architecture, stream piping are achieved through [pipeline](https://the-connector-architecture.github.io/site/docs/6_Pipeline#intro-to-the-pipeline) configuration. The output Writeable stream of a process will become the input Readable stream of another, when the two processors are bundled in a pipeline.
 
 *pipeline configuration*
 
@@ -162,18 +154,18 @@ To interpret the above in words, processor js:PreFunc communicates with processo
 js:PreFunc generates <pre-func-process/writer-js> data stream as output to be consumed by processor js:Func
 as input <pre-func-process/reader-js>, and likewise js:Func outputs <func-process/writer-js> for processor js:PostFunc.
 
-*Runner and Chanel*
+*Runner and Channel*
 
 In this tutorial, we will only use JS runner to execute the processors. Naturally, Connector Architecture does not limit to this. The main focus of Connector Architecture is on enabling different data processors to work together effectively,
 regardless of the specific technologies or frameworks they are built upon (e.g. a JS stream instance that feeds into a Websoket instance).
 
-More detail can be found at [Connector Architecture Wiki](https://github.com/TREEcg/connector-architecture/wiki)
+More detail can be found at [Connector Architecture Site](https://the-connector-architecture.github.io/site/docs/1_Home)
 
 **Side notes**
 
 > Caution: Connector Architecture implements its own Stream types. Keep in mind that they are not derived from NodeJS stream! More details can be found [connector-types](https://github.com/TREEcg/connectors/tree/main/packages/types).
 
-> In practice, data chunks of a Connector Architecture stream in a processor are better to be of type *string* in oder to make the processor reusable beyond JavaScript.
+> In practice, data chunks of a Connector Architecture stream in a processor are better to be of type *string* in order to make the processor reusable beyond JavaScript.
 
 > - Connector Architecture Readable stream - `Stream`
     >    - listen to the `Stream.on('data')` event to process each data chunk
@@ -192,15 +184,18 @@ Long story short, you do not really need to create any processor on your own but
 ```shell
 # 1. create your own processor GitHub repository and clone it to local
 git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY
+cd YOUR-REPOSITORY
 
-# 2. set Connector-Architecture up in your local environment
-git clone https://github.com/TREEcg/connector-architecture.git
+# 2. set up a new Javascript environment
+npm init -y
 
-# 3. create a new branch of Connector Architecture repo for PR and add a new processor
-cd connector-architecture
-git branch <new-branch>
-cd processor
-git submodule add https://github.com/YOUR-USERNAME/YOUR-REPOSITORY
+# 3. install the channel types
+npm install @treecg/connector-types
+
+# 4. code your processor and create a configuration file
+
+# 5. add your processor configuration file to the site
+# here https://github.com/The-Connector-Architecture/site/blob/main/src/routes/components/%2Bpage.server.ts
 ```
 
 ### Substring fragmentation processors
@@ -278,7 +273,8 @@ git submodule add https://github.com/YOUR-USERNAME/YOUR-REPOSITORY
 # copy the pre-prepared pipeline configuration and the config file to your repository
 cp pipeline.ttl config.json <YOUR-REPOSITORY>
 # run pipeline
-cd connector-architecture/runner/js-runner; node ./bin/js-runner.js ../../<YOUR-REPOSITORY>/pipeline.ttl 
+cd connector-architecture/runner/js-runner
+node ./bin/js-runner.js ../../<YOUR-REPOSITORY>/pipeline.ttl 
 ```
 By now you should have a sense about how Connector Architecture works.
 
